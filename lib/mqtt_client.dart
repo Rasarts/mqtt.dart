@@ -203,7 +203,10 @@ class MqttClient<E extends VirtualMqttConnection> {
    List<int> _processMqttMessage(dynamic details) {
      var data = details;
 
-     if (details.runtimeType.toString() != 'Uint8List') data = details.asInt8List();
+     if (details.runtimeType.toString() != 'Uint8List' &&
+         details.runtimeType.toString() != "_Uint8ArrayView") {
+       data = details.asInt8List();
+     }
 
      num type = data[0] >> 4;
      int msgProcessedLength = data.length; 
