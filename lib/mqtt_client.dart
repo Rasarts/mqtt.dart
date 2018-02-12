@@ -177,7 +177,10 @@ class MqttClient<E extends VirtualMqttConnection> {
    void _openSession() {
      print("Opening session");
      MqttMessageConnect m = new MqttMessageConnect.setOptions(_clientID, _qos, _cleanSession);
-
+     
+     m._userName= _userName;
+     m._password = _password;
+     
      if (_userName != null && _password != null) {
        m.setUserNameAndPassword(_userName, _password);
      }
