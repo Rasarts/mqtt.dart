@@ -1,5 +1,4 @@
-import 'package:unittest/unittest.dart';
-import 'package:unittest/vm_config.dart';
+import 'package:test/test.dart';
 
 import '../lib/mqtt_shared.dart';
 
@@ -12,13 +11,12 @@ class MqttMessagePublishMatcher extends Matcher {
     return (_expected == actual);
   }
   
-  Description describe(Description description) {
-    description.add("MqttMessage");
-  }
+   describe(Description description) {
+     return description.add("MqttMessage");
+   }
 }
 
 main() {
-  useVMConfiguration();
 
   testPublish("MqttMessagePublish QOS(0) - no retain", QOS_0, 0);
   testPublish("MqttMessagePublish QOS(1) - no retain", QOS_1, 0);
@@ -65,5 +63,11 @@ testPublish(String testName, num QoS, int retain) {
     MqttMessagePublish m2 = new MqttMessagePublish.decode(m1.buf);
     
     expect(m2, new MqttMessagePublishMatcher(m1));
+
+    MqttMessagePublish ml1 = new MqttMessagePublish.setOptions("topicTEST", "payloadTEST very long very long very long very long very long very long very long very long very long very long very long very long very long very long very long very long very long", 1, QoS, retain);
+    ml1.encode();    
+    MqttMessagePublish ml2 = new MqttMessagePublish.decode(ml1.buf);
+    
+    expect(ml2, new MqttMessagePublishMatcher(ml1));
   });
 }
