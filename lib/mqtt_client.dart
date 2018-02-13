@@ -200,8 +200,12 @@ class MqttClient<E extends VirtualMqttConnection> {
        // append data to remaining data
        _remData.addAll(data);
      } else {
+       if (data is ByteBuffer){
+         _remData = (data as ByteBuffer).asInt8List();
+       } else {
        // No remaining data
        _remData = data.toList(growable:true);
+       }
      }
      
      var lenBefore, lenAfter;
